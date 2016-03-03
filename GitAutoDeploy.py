@@ -55,6 +55,22 @@ class GitWrapper():
         pass
 
     @staticmethod
+    def pre(repo_config):
+        """Executes any supplied pre-pull deploy command"""
+        from subprocess import call
+
+        path = repo_config['path']
+
+        cmds = []
+        if 'pre' in repo_config:
+            cmds.insert(0, repo_config['pre'])
+
+        print 'Executing pre-pull command(s)'
+
+        for cmd in cmds:
+            call(['cd "' + path + '" && ' + cmd], shell=True)
+
+    @staticmethod
     def pull(repo_config):
         """Pulls the latest version of the repo from the git server"""
         from subprocess import call
